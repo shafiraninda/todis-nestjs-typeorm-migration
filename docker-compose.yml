@@ -1,0 +1,19 @@
+networks:
+  database:
+    external: true
+
+version: '3'
+services:
+  postgres:
+    image: 'postgres:13.2'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: process.env.POSTGRES_USER
+      POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD
+      POSTGRES_DB: process.env.POSTGRES_DATABASE
+      # allow anyone to connect - even without a password
+      # ONLY USE FOR RUNNING LOCALLY OR IN CI/CD
+      POSTGRES_HOST_AUTH_METHOD: trust
+  
+      
