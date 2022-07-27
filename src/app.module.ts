@@ -1,23 +1,24 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { RouterModule } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { staffsModule } from './staffs/staffs.module';
+import { tasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal:true}),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: parseInt(<string>process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE,
-      entities: ['dist/src/entity/**/*.entity.js'],
-      migrations: ["src/migration/**/*.ts"],
-      synchronize: true
-    })
+    staffsModule,
+    tasksModule,
+    RouterModule.register([
+      {
+        path: 'karyawan',
+        module: staffsModule,
+      },
+      {
+        path: 'tugas',
+        module: tasksModule
+      }
+    ])
   ],
   controllers: [AppController],
   providers: [AppService],
